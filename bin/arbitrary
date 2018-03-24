@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+require_relative '../lib/like_a_tree'
+require_relative '../lib/x_marks_the_spot'
+
+drawings = []
+
+op = OptionParser.new do |o|
+  o.banner = 'Usage: arbitrary [options]'
+
+  o.on('-x', '--spot N', Float, 'Draw an X to odd number height N') do |n|
+    drawings << XMarksTheSpot.new(n)
+  end
+  o.on('-t', '--tree N', Float, 'Draw a tree to height N') do |n|
+    drawings << LikeATree.new(n)
+  end
+end
+
+op.parse!
+
+abort op.to_s if drawings.empty?
+
+drawings.each do |d|
+  puts d.draw.join "\n" if d.respond_to? :draw
+end
